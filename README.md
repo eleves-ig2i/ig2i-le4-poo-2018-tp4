@@ -1,12 +1,13 @@
-# Session 3 [![Build Status](https://travis-ci.org/eleves-ig2i/ig2i-le4-poo-2018-tp3.svg?branch=master)](https://travis-ci.org/eleves-ig2i/ig2i-le4-poo-2018-tp3) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+# Session 4 [![Build Status](https://travis-ci.org/eleves-ig2i/ig2i-le4-poo-2018-tp4.svg?branch=master)](https://travis-ci.org/eleves-ig2i/ig2i-le4-poo-2018-tp4) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## Description
 
-> This TP was realized with JPA inheritance. It allows to illustrate the following notions :
-> * object-relational mapping
-> * JPA API (Java Persistence API)
-> * DAO design pattern (Data Access Object)
-> * Factory design pattern
+> This TP was realized with JPA inheritance. It's the continuation of the previous TP and allows to illustrate the following notions :
+> * feasible solution
+> * heuristic methods
+> * constructive methods
+> * insertions methods
+> * Clarke and Wright algorithm
 
 ## Table of contents
 - [Installation](#installation)

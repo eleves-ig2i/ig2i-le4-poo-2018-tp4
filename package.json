@@ -18,12 +18,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Hercules0402/ig2i-le4-poo-2018-tp4.git"
+		"url": "git+https://github.com/eleves-ig2i/ig2i-le4-poo-2018-tp4.git"
 	},
 	"author": "",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Hercules0402/ig2i-le4-poo-2018-tp4/issues"
+		"url": "https://github.com/eleves-ig2i/ig2i-le4-poo-2018-tp4/issues"
 	},
-	"homepage": "https://github.com/Hercules0402/ig2i-le4-poo-2018-tp4#readme"
+	"homepage": "https://github.com/eleves-ig2i/ig2i-le4-poo-2018-tp4#readme"
 }

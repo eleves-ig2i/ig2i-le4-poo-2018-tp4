@@ -66,6 +66,7 @@ public class Instance implements Serializable {
 	 * @param nom TODO
 	 */
 	public Instance(String nom) {
+		this();
 		this.nom = nom;
 	}
 
@@ -118,7 +119,15 @@ public class Instance implements Serializable {
 
 	@Override
 	public String toString() {
-		return "metier.Instance[ id=" + id + " ]";
+		String retour = "Instance n°" + id + " [\n\tVéhicules :\n\t";
+		for (Vehicule v : vehiculeSet){
+			retour += v.toString();
+		}
+		retour += "\n\tPoints :\n\t";
+		for (Point p : pointSet){
+			retour += p.toString();
+		}
+		return retour + "\n]";
 	}
 
 }

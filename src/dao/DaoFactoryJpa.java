@@ -31,4 +31,9 @@ public class DaoFactoryJpa extends DaoFactory {
 		return JpaPlanningDao.getInstance();
 	}
 
+	@Override
+	public InstanceDao getInstanceDao() {
+		return JpaInstanceDao.getInstance();
+	}
+
 }

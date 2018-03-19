@@ -100,4 +100,13 @@ public class Client extends Point implements Serializable {
 			+ " }\n\tdemande : " + demand + "\n\tposition : " + position + " ]";
 	}
 
+	/**
+	 * Permet de ne plus affecter un véhicule à un client et lui donner une
+	 * position par défault.
+	 */
+	public void clear() {
+		this.position = -1;
+		this.nvehicule = null;
+	}
+
 }

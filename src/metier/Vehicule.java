@@ -224,4 +224,14 @@ public class Vehicule implements Serializable {
 		}
 	}
 
+	/**
+	 * Permet de vider la liste de clients et réinitialiser les attributs.
+	 */
+	public void clear() {
+		this.nplanning = null;
+		this.cout = 0.0;
+		this.capaciteutilisee = 0;
+		this.ensClients.clear();
+	}
+
 }

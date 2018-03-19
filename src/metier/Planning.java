@@ -46,8 +46,6 @@ public class Planning implements Serializable {
 	@Column(name = "COUT")
 	private double cout;
 
-	@JoinColumn(name = "NINSTANCE", referencedColumnName = "ID")
-	@ManyToOne
 	private Instance ninstance;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "nplanning")
@@ -155,6 +153,14 @@ public class Planning implements Serializable {
 				i++;
 			}
 		}
+	}
+
+	/**
+	 * Permet de vider l'ensemble des véhicules et réinitialiser les atrributs.
+	 */
+	public void clear() {
+		this.cout = 0.0;
+		this.ensVehicules.clear();
 	}
 
 }

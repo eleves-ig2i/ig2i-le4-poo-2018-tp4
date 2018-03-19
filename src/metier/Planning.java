@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -45,7 +46,8 @@ public class Planning implements Serializable {
 
 	@Column(name = "COUT")
 	private double cout;
-
+	
+	@OneToOne
 	private Instance ninstance;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "nplanning")

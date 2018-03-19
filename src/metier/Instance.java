@@ -203,4 +203,12 @@ public class Instance implements Serializable {
 		this.nplanning.clear();
 	}
 
+	/**
+	 * Permet de vérifier si le planning est réalisable.
+	 * @return 
+	 */
+	public boolean checkPlanning() {
+		return this.nplanning.check();
+	}
+
 }

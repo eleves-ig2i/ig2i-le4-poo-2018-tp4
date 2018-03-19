@@ -166,4 +166,30 @@ public class Planning implements Serializable {
 		this.ensVehicules.clear();
 	}
 
+	/**
+	 * Permet de vérifier si le planning est réalisable.
+	 * @return 
+	 */
+	public boolean check() {
+		Set<Client> clientsServis = new HashSet<>();
+		double coutTotal = 0;
+		for (Vehicule v : this.ensVehicules) {
+			if (!v.check()) {
+				System.out.println("Vehicule incorrect : "+v);
+				return false;
+			}
+			coutTotal += v.getCout();
+			clientsServis.addAll(v.getEnsClients());
+		}
+		if (clientsServis.size() != this.ninstance.getClients().size()) {
+			System.out.println("Tous les clients ne sont pas servis");
+			return false;
+		}
+		if (Math.abs(coutTotal - this.cout) > 0.0001) {
+			System.out.println("Mauvais calcul du coût total");
+			return false;
+		}
+		return true;
+	}
+
 }

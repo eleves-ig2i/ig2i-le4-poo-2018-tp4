@@ -3,6 +3,7 @@ package metier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -232,6 +233,57 @@ public class Vehicule implements Serializable {
 		this.cout = 0.0;
 		this.capaciteutilisee = 0;
 		this.ensClients.clear();
+	}
+
+	/**
+	 * Permet de vérifier si le véhicule est correct.
+	 * @return 
+	 */
+	public boolean check() {
+		int capa = calculateCapaUtilisee();
+		if (capa != this.capaciteutilisee) {
+			System.out.println("Capacité mal calculée");
+			return false;
+		}
+		if(capa > this.capacite) {
+			System.out.println("Capacité dépassée");
+			return false;
+		}
+		double dist = this.calculateDistance();
+		if (Math.abs(dist - this.cout) > 0.0001) {
+			System.out.println("Distance mal calculée");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Permet de calculer la distance.
+	 * @return 
+	 */
+	private double calculateDistance() {
+		double dist = 0;
+		List<Client> clients = new ArrayList<>(this.ensClients);
+		if (!clients.isEmpty()) {
+			dist += this.ndepot.getDistanceTo(clients.get(0));
+			for (int i=0; i<clients.size()-1; i++) {
+				dist += clients.get(i).getDistanceTo(clients.get(i+1));
+			}
+			dist += clients.get(clients.size()-1).getDistanceTo(this.ndepot);
+		}
+		return dist;
+	}
+
+	/**
+	 * Peremt de calculer la capacitée utilisée.
+	 * @return 
+	 */
+	private int calculateCapaUtilisee() {
+		int capa = 0;
+		for (Client c : this.ensClients) {
+			capa += c.getDemand();
+		}
+		return capa;
 	}
 
 }

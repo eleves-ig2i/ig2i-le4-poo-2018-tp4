@@ -58,5 +58,8 @@ public class HeuristiqueConstructive {
 		if (!instance.checkPlanning()) {
 			System.out.println("Solution FAUSSE !!!");
 		}
+		if (!instance.checkPlanning()) {
+			System.out.println("Solution BONNE !!!");
+		}
 	}
 }

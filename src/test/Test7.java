@@ -11,7 +11,7 @@ import metier.Vehicule;
  * Jeux de tests 6.
  * @author user
  */
-public class Test6 {
+public class Test7 {
 
 	/**
 	 * TODO.
@@ -29,7 +29,7 @@ public class Test6 {
 		InstanceDao instanceManager = fabrique.getInstanceDao();
 		for (Instance inst : instanceManager.findAll()) {
 			HeuristiqueConstructive heur = new HeuristiqueConstructive(inst);
-			heur.insertionSimple();
+			heur.insertionClientProche();
 			System.out.println("Instance : "+inst.getNom()
 				+ "\tCout : " + inst.getCoutPlanning()
 				+ "\tNb vehicules : " + inst.getnPlanning().getEnsVehicules().size());

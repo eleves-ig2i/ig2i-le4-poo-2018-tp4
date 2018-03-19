@@ -47,6 +47,7 @@ public class Planning implements Serializable {
 	@Column(name = "COUT")
 	private double cout;
 	
+	@JoinColumn(name = "NINSTANCE", referencedColumnName = "ID")
 	@OneToOne
 	private Instance ninstance;
 

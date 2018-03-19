@@ -208,9 +208,9 @@ public class Vehicule implements Serializable {
 				}
 				if (this.ensClients.add(c)) {
 					this.setCapaciteutilisee(this.getCapaciteutilisee() + c.getDemand());
-					this.setCout(this.getCout() + dernierPoint.getDistanceTo(c.getId()));
+					this.setCout(this.getCout() + dernierPoint.getDistanceTo(c));
 					this.getNplanning().setCout(this.getNplanning().getCout()
-							+ dernierPoint.getDistanceTo(c.getId()));
+							+ dernierPoint.getDistanceTo(c));
 					c.setNvehicule(this);
 					return true;
 				} else {

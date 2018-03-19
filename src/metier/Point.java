@@ -71,7 +71,7 @@ public abstract class Point implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ndepart")
 	@MapKey(name = "narrivee")
-	private Map<Integer,Route> ensRoutes;
+	private Map<Point,Route> ensRoutes;
 
 	@JoinColumn(name = "NINSTANCE", referencedColumnName = "ID")
 	@ManyToOne
@@ -146,7 +146,7 @@ public abstract class Point implements Serializable {
 		this.ninstance = ninstance;
 	}
 
-	public Map<Integer, Route> getEnsRoutes() {
+	public Map<Point, Route> getEnsRoutes() {
 		return ensRoutes;
 	}
 
@@ -188,7 +188,7 @@ public abstract class Point implements Serializable {
 	 */
 	public boolean addDestination(Point p, double distance) {
 		Route route = new Route(distance,this,p);
-		if (this.ensRoutes.put(route.getNarrivee().getId(), route) == null) {
+		if (this.ensRoutes.put(route.getNarrivee(), route) == null) {
 			return false;
 		} else {
 			return true;
@@ -200,7 +200,7 @@ public abstract class Point implements Serializable {
 	 * @param key  TODO
 	 * @return double
 	 */
-	public double getDistanceTo(int key) {
+	public double getDistanceTo(Point key) {
 		if (this.ensRoutes.containsKey(key)) {
 			return this.ensRoutes.get(key).getDistance();
 		} else {

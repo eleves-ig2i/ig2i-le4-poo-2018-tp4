@@ -245,7 +245,7 @@ public class Vehicule implements Serializable {
 			System.out.println("Capacité mal calculée");
 			return false;
 		}
-		if(capa > this.capacite) {
+		if (capa > this.capacite) {
 			System.out.println("Capacité dépassée");
 			return false;
 		}

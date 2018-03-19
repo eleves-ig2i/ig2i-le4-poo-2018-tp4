@@ -175,7 +175,7 @@ public class Planning implements Serializable {
 		double coutTotal = 0;
 		for (Vehicule v : this.ensVehicules) {
 			if (!v.check()) {
-				System.out.println("Vehicule incorrect : "+v);
+				System.out.println("Vehicule incorrect : " + v);
 				return false;
 			}
 			coutTotal += v.getCout();

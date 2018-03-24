@@ -238,7 +238,7 @@ public class Vehicule implements Serializable {
 
 	/**
 	 * Permet de vérifier si le véhicule est correct.
-	 * @return 
+	 * @return boolean
 	 */
 	public boolean check() {
 		int capa = calculerCapaUtilisee();
@@ -257,27 +257,27 @@ public class Vehicule implements Serializable {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Permet de calculer la distance.
-	 * @return 
+	 * @return double
 	 */
 	private double calculerDistance() {
 		double dist = 0;
 		List<Client> clients = new ArrayList<>(this.ensClients);
 		if (!clients.isEmpty()) {
 			dist += this.ndepot.getDistanceTo(clients.get(0));
-			for (int i=0; i<clients.size()-1; i++) {
-				dist += clients.get(i).getDistanceTo(clients.get(i+1));
+			for (int i = 0; i < (clients.size() - 1); i++) {
+				dist += clients.get(i).getDistanceTo(clients.get(i + 1));
 			}
-			dist += clients.get(clients.size()-1).getDistanceTo(this.ndepot);
+			dist += clients.get(clients.size() - 1).getDistanceTo(this.ndepot);
 		}
 		return dist;
 	}
 
 	/**
 	 * Peremt de calculer la capacitée utilisée.
-	 * @return 
+	 * @return int
 	 */
 	private int calculerCapaUtilisee() {
 		int capa = 0;
@@ -288,11 +288,11 @@ public class Vehicule implements Serializable {
 	}
 
 	/**
-	 * Permet de calculer la meilleure insertion dans une tournée
+	 * Permet de calculer la meilleure insertion dans une tournée.
 	 * @param c TODO
 	 * @return MeilleureInsertionInfos
 	 */
-	public MeilleureInsertionInfos infosMeilleureInsertion(Client c){
+	public MeilleureInsertionInfos infosMeilleureInsertion(Client c) {
 		if (c == null) {
 			return null;
 		}
@@ -315,7 +315,7 @@ public class Vehicule implements Serializable {
 	 * Permet de réaliser l'insertion d'un client au meilleur véhicule et à la
 	 * meilleure position.
 	 * @param infos TODO
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public boolean meilleureInsertion(MeilleureInsertionInfos infos) {
 		if (infos == null) {
@@ -324,7 +324,7 @@ public class Vehicule implements Serializable {
 		if (!infos.getVehicule().equals(this)) {
 			return false;
 		}
-		return this.addClient(infos.getClient(), infos.getPosition());
+		return this.addClientByPos(infos.getClient(), infos.getPosition());
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class Vehicule implements Serializable {
 	 * @param pos TODO
 	 * @return boolean
 	 */
-	private boolean addClient(Client c, int pos){
+	private boolean addClientByPos(Client c, int pos) {
 		if (c == null) {
 			return false;
 		}
@@ -346,7 +346,7 @@ public class Vehicule implements Serializable {
 		if (!c.setVehicule(this)) {
 			return false;
 		}
-		
+
 		double deltaCout = calculerDeltaCout(c, pos);
 		this.ensClients.add(pos, c);
 		this.capaciteutilisee += c.getDemand();
@@ -366,17 +366,17 @@ public class Vehicule implements Serializable {
 		if (pos < 0 || pos > ensClients.size()) {
 			return Double.MAX_VALUE;
 		}
-		
+
 		Point prec = ndepot;
 		if (pos > 0) {
-			prec = ensClients.get(pos-1);
+			prec = ensClients.get(pos - 1);
 		}
-		
+
 		Point next = ndepot;
 		if (pos < ensClients.size()) {
 			next = ensClients.get(pos);
 		}
-		
+
 		double previousDistance = 0;
 		if (!prec.equals(next)) {
 			previousDistance = prec.getDistanceTo(next);

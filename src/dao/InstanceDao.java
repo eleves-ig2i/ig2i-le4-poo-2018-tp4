@@ -9,8 +9,8 @@ import metier.Instance;
 public interface InstanceDao extends DAO<Instance> {
 
 	/**
-	 * Permet derechercher une instance par nom;
-	 * @param name
+	 * Permet derechercher une instance par nom.
+	 * @param name TODO
 	 * @return Instance
 	 */
 	public Instance findByName(String name);

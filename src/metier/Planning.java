@@ -46,7 +46,7 @@ public class Planning implements Serializable {
 
 	@Column(name = "COUT")
 	private double cout;
-	
+
 	@JoinColumn(name = "NINSTANCE", referencedColumnName = "ID")
 	@OneToOne
 	private Instance ninstance;
@@ -168,7 +168,7 @@ public class Planning implements Serializable {
 
 	/**
 	 * Permet de vérifier si le planning est réalisable.
-	 * @return 
+	 * @return boolean
 	 */
 	public boolean check() {
 		Set<Client> clientsServis = new HashSet<>();

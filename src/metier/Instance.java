@@ -122,11 +122,11 @@ public class Instance implements Serializable {
 	@Override
 	public String toString() {
 		String retour = "Instance n°" + id + " [\n\tVéhicules :\n\t";
-		for (Vehicule v : vehiculeSet){
+		for (Vehicule v : vehiculeSet) {
 			retour += v.toString();
 		}
 		retour += "\n\tPoints :\n\t";
-		for (Point p : pointSet){
+		for (Point p : pointSet) {
 			retour += p.toString();
 		}
 		return retour + "\n]";
@@ -134,7 +134,7 @@ public class Instance implements Serializable {
 
 	/**
 	 * Retourne une liste de véhicules.
-	 * @return 
+	 * @return list of vehicules
 	 */
 	public List<Vehicule> getVehicules() {
 		return new ArrayList<>(this.vehiculeSet);
@@ -142,7 +142,7 @@ public class Instance implements Serializable {
 
 	/**
 	 * Retourne une liste de clients.
-	 * @return 
+	 * @return list of clients
 	 */
 	public List<Client> getClients() {
 		List<Client> clients = new ArrayList<>();
@@ -183,7 +183,7 @@ public class Instance implements Serializable {
 	public void printPlanning() {
 		System.out.println(this.nplanning);
 	}
-	
+
 	/**
 	 * Permet de vider les éléments liés à la solution : les clients ne doivent
 	 * plus être affectés à un véhicule, et avoir une position par défault, les
@@ -205,7 +205,7 @@ public class Instance implements Serializable {
 
 	/**
 	 * Permet de vérifier si le planning est réalisable.
-	 * @return 
+	 * @return boolean
 	 */
 	public boolean checkPlanning() {
 		return this.nplanning.check();

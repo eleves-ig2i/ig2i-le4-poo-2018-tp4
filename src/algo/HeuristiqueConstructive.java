@@ -7,7 +7,7 @@ import metier.Instance;
 import metier.Vehicule;
 
 /**
- * Implémente des algorithmes heuristiques constructifs
+ * Implémente des algorithmes heuristiques constructifs.
  * @author user
  */
 public class HeuristiqueConstructive {
@@ -71,7 +71,7 @@ public class HeuristiqueConstructive {
 		List<Vehicule> vehicules = this.instance.getVehicules();
 		List<Vehicule> vehiculesUtilises = new ArrayList<>();
 		int next = 0;
-	
+
 		while (!clients.isEmpty()) {
 			Client c = clients.remove(next);
 			boolean affecte = false;
@@ -138,7 +138,7 @@ public class HeuristiqueConstructive {
 		List<Vehicule> vehicules = this.instance.getVehicules();
 		List<Vehicule> vehiculesUtilises = new ArrayList<>();
 		int next = 0;
-	
+
 		while (!clients.isEmpty()) {
 			Client c = clients.remove(next);
 			boolean affecte = meilleureInsertion(c, vehiculesUtilises);
@@ -170,7 +170,7 @@ public class HeuristiqueConstructive {
 	/**
 	 * Permet de calculer la meilleure insertion dans la liste des véhécules
 	 * utilisés.
-	 * @param c
+	 * @param c TODO
 	 * @param vehiculesUtilises TODO
 	 * @return boolean
 	 */

@@ -95,20 +95,20 @@ public class Client extends Point implements Serializable {
 	}
 
 	/**
-	 * Permet d'affecter un véhicule à un client
+	 * Permet d'affecter un véhicule à un client.
 	 * @param v TODO
 	 * @return boolean
 	 */
-	public boolean setVehicule(Vehicule v){
-        if (v == null) {
+	public boolean setVehicule(Vehicule v) {
+		if (v == null) {
 			return false;
 		}
-        if (this.nvehicule != null) {
+		if (this.nvehicule != null) {
 			return false;
 		}
-        this.nvehicule = v;
-        return true;
-    }
+		this.nvehicule = v;
+		return true;
+	}
 
 	@Override
 	public String toString() {

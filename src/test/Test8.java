@@ -30,9 +30,9 @@ public class Test8 {
 		for (Instance inst : instanceManager.findAll()) {
 			HeuristiqueConstructive heur = new HeuristiqueConstructive(inst);
 			heur.meilleureInsertion();
-			System.out.println("Instance : "+inst.getNom()
-				+ "\tCout : " + inst.getCoutPlanning()
-				+ "\tNb vehicules : " + inst.getnPlanning().getEnsVehicules().size());
+			System.out.println("Instance : " + inst.getNom()
+					+ "\tCout : " + inst.getCoutPlanning()
+					+ "\tNb vehicules : " + inst.getnPlanning().getEnsVehicules().size());
 			instanceManager.update(inst);
 		}
 	}

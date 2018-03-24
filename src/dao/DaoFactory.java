@@ -47,7 +47,7 @@ public abstract class DaoFactory {
 	 * @return PlanningDao
 	 */
 	public abstract PlanningDao getPlanningDao();
-	
+
 	/**
 	 * Retourne une InstanceDao.
 	 * @return InstanceDao

@@ -1,8 +1,10 @@
 package metier;
 
+import algo.MeilleureInsertionInfos;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -57,7 +59,7 @@ public class Vehicule implements Serializable {
 	private Integer capacite;
 
 	@OneToMany(mappedBy = "nvehicule")
-	private Set<Client> ensClients;
+	private List<Client> ensClients;
 
 	@JoinColumn(name = "NINSTANCE", referencedColumnName = "ID")
 	@ManyToOne
@@ -75,7 +77,7 @@ public class Vehicule implements Serializable {
 	 * Constructeur par défault.
 	 */
 	public Vehicule() {
-		this.ensClients = new HashSet<>();
+		this.ensClients = new ArrayList<>();
 	}
 
 	/**
@@ -142,7 +144,7 @@ public class Vehicule implements Serializable {
 
 	@XmlTransient
 	public Set<Client> getEnsClients() {
-		return ensClients;
+		return new HashSet<>(ensClients);
 	}
 
 	public Instance getNinstance() {
@@ -208,9 +210,9 @@ public class Vehicule implements Serializable {
 				}
 				if (this.ensClients.add(c)) {
 					this.setCapaciteutilisee(this.getCapaciteutilisee() + c.getDemand());
-					this.setCout(this.getCout() + dernierPoint.getDistanceTo(c.getId()));
+					this.setCout(this.getCout() + dernierPoint.getDistanceTo(c));
 					this.getNplanning().setCout(this.getNplanning().getCout()
-							+ dernierPoint.getDistanceTo(c.getId()));
+							+ dernierPoint.getDistanceTo(c));
 					c.setNvehicule(this);
 					return true;
 				} else {
@@ -222,6 +224,164 @@ public class Vehicule implements Serializable {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Permet de vider la liste de clients et réinitialiser les attributs.
+	 */
+	public void clear() {
+		this.nplanning = null;
+		this.cout = 0.0;
+		this.capaciteutilisee = 0;
+		this.ensClients.clear();
+	}
+
+	/**
+	 * Permet de vérifier si le véhicule est correct.
+	 * @return boolean
+	 */
+	public boolean check() {
+		int capa = calculerCapaUtilisee();
+		if (capa != this.capaciteutilisee) {
+			System.out.println("Capacité mal calculée");
+			return false;
+		}
+		if (capa > this.capacite) {
+			System.out.println("Capacité dépassée");
+			return false;
+		}
+		double dist = this.calculerDistance();
+		if (Math.abs(dist - this.cout) > 0.0001) {
+			System.out.println("Distance mal calculée");
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Permet de calculer la distance.
+	 * @return double
+	 */
+	private double calculerDistance() {
+		double dist = 0;
+		List<Client> clients = new ArrayList<>(this.ensClients);
+		if (!clients.isEmpty()) {
+			dist += this.ndepot.getDistanceTo(clients.get(0));
+			for (int i = 0; i < (clients.size() - 1); i++) {
+				dist += clients.get(i).getDistanceTo(clients.get(i + 1));
+			}
+			dist += clients.get(clients.size() - 1).getDistanceTo(this.ndepot);
+		}
+		return dist;
+	}
+
+	/**
+	 * Peremt de calculer la capacitée utilisée.
+	 * @return int
+	 */
+	private int calculerCapaUtilisee() {
+		int capa = 0;
+		for (Client c : this.ensClients) {
+			capa += c.getDemand();
+		}
+		return capa;
+	}
+
+	/**
+	 * Permet de calculer la meilleure insertion dans une tournée.
+	 * @param c TODO
+	 * @return MeilleureInsertionInfos
+	 */
+	public MeilleureInsertionInfos infosMeilleureInsertion(Client c) {
+		if (c == null) {
+			return null;
+		}
+		if ((this.capaciteutilisee + c.getDemand()) > this.capacite) {
+			return null;
+		}
+		int position = 0;
+		double deltaCout = calculerDeltaCout(c, 0);
+		for (int i = 1; i <= ensClients.size(); i++) {
+			double d = calculerDeltaCout(c, i);
+			if (d < deltaCout) {
+				deltaCout = d;
+				position = i;
+			}
+		}
+		return new MeilleureInsertionInfos(c, this, position, deltaCout);
+	}
+
+	/**
+	 * Permet de réaliser l'insertion d'un client au meilleur véhicule et à la
+	 * meilleure position.
+	 * @param infos TODO
+	 * @return boolean
+	 */
+	public boolean meilleureInsertion(MeilleureInsertionInfos infos) {
+		if (infos == null) {
+			return false;
+		}
+		if (!infos.getVehicule().equals(this)) {
+			return false;
+		}
+		return this.addClientByPos(infos.getClient(), infos.getPosition());
+	}
+
+	/**
+	 * Permet d'ajouter un client à une position donnée.
+	 * @param c TODO
+	 * @param pos TODO
+	 * @return boolean
+	 */
+	private boolean addClientByPos(Client c, int pos) {
+		if (c == null) {
+			return false;
+		}
+		if (pos < 0 || pos > ensClients.size()) {
+			return false;
+		}
+		if ((this.capaciteutilisee + c.getDemand()) > this.capacite) {
+			return false;
+		}
+		if (!c.setVehicule(this)) {
+			return false;
+		}
+
+		double deltaCout = calculerDeltaCout(c, pos);
+		this.ensClients.add(pos, c);
+		this.capaciteutilisee += c.getDemand();
+		this.cout += deltaCout;
+		this.nplanning.setCout(this.nplanning.getCout() + deltaCout);
+		return true;
+	}
+
+	/**
+	 * Permet de calculer le coût delta représentant l'insertion du client c à
+	 * la position pos.
+	 * @param c TODO
+	 * @param pos TODO
+	 * @return double
+	 */
+	private double calculerDeltaCout(Client c, int pos) {
+		if (pos < 0 || pos > ensClients.size()) {
+			return Double.MAX_VALUE;
+		}
+
+		Point prec = ndepot;
+		if (pos > 0) {
+			prec = ensClients.get(pos - 1);
+		}
+
+		Point next = ndepot;
+		if (pos < ensClients.size()) {
+			next = ensClients.get(pos);
+		}
+
+		double previousDistance = 0;
+		if (!prec.equals(next)) {
+			previousDistance = prec.getDistanceTo(next);
+		}
+		return prec.getDistanceTo(c) + c.getDistanceTo(next) - previousDistance;
 	}
 
 }

@@ -94,10 +94,35 @@ public class Client extends Point implements Serializable {
 		this.nvehicule = nvehicule;
 	}
 
+	/**
+	 * Permet d'affecter un véhicule à un client.
+	 * @param v TODO
+	 * @return boolean
+	 */
+	public boolean setVehicule(Vehicule v) {
+		if (v == null) {
+			return false;
+		}
+		if (this.nvehicule != null) {
+			return false;
+		}
+		this.nvehicule = v;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "Client n°" + super.getId() + " [\n\t{ " + super.toString()
 			+ " }\n\tdemande : " + demand + "\n\tposition : " + position + " ]";
+	}
+
+	/**
+	 * Permet de ne plus affecter un véhicule à un client et lui donner une
+	 * position par défault.
+	 */
+	public void clear() {
+		this.position = -1;
+		this.nvehicule = null;
 	}
 
 }

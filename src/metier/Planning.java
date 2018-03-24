@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -47,7 +48,7 @@ public class Planning implements Serializable {
 	private double cout;
 
 	@JoinColumn(name = "NINSTANCE", referencedColumnName = "ID")
-	@ManyToOne
+	@OneToOne
 	private Instance ninstance;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "nplanning")
@@ -155,6 +156,40 @@ public class Planning implements Serializable {
 				i++;
 			}
 		}
+	}
+
+	/**
+	 * Permet de vider l'ensemble des véhicules et réinitialiser les atrributs.
+	 */
+	public void clear() {
+		this.cout = 0.0;
+		this.ensVehicules.clear();
+	}
+
+	/**
+	 * Permet de vérifier si le planning est réalisable.
+	 * @return boolean
+	 */
+	public boolean check() {
+		Set<Client> clientsServis = new HashSet<>();
+		double coutTotal = 0;
+		for (Vehicule v : this.ensVehicules) {
+			if (!v.check()) {
+				System.out.println("Vehicule incorrect : " + v);
+				return false;
+			}
+			coutTotal += v.getCout();
+			clientsServis.addAll(v.getEnsClients());
+		}
+		if (clientsServis.size() != this.ninstance.getClients().size()) {
+			System.out.println("Tous les clients ne sont pas servis");
+			return false;
+		}
+		if (Math.abs(coutTotal - this.cout) > 0.0001) {
+			System.out.println("Mauvais calcul du coût total");
+			return false;
+		}
+		return true;
 	}
 
 }

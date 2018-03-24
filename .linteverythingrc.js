@@ -9,5 +9,9 @@ module.exports = {
 		'db_routage_with_data.sql',
 		'db_scripts_instances.zip',
 		'nbproject/project.xml'
+	],
+	ignoreExtensions: [
+		'zip',
+		'pdf'
 	]
 };

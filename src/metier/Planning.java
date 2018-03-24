@@ -197,7 +197,7 @@ public class Planning implements Serializable {
 	 * @param v TODO
 	 * @return boolean
 	 */
-	public boolean removeVehicule(Vehicule v){
+	public boolean removeVehicule(Vehicule v) {
 		if (v == null) {
 			return false;
 		}

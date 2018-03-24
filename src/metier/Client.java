@@ -115,13 +115,13 @@ public class Client extends Point implements Serializable {
 	 * @param v TODO
 	 * @return boolean
 	 */
-	public boolean changeVehicule(Vehicule v){
-        if (v == null) {
+	public boolean changeVehicule(Vehicule v) {
+		if (v == null) {
 			return false;
 		}
-        this.nvehicule = v;
-        return true;
-    }
+		this.nvehicule = v;
+		return true;
+	}
 
 	@Override
 	public String toString() {

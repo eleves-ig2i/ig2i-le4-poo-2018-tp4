@@ -1,4 +1,4 @@
 script:
   - npm install linteverything@latest
-  - printf "module.exports={ignore:['node_modules','package-lock.json','.git','.travis.yml','db_scripts_instances.zip'],verbose:true};" > .linteverythingrc.js
+  - printf "module.exports={ignore:['node_modules','package-lock.json','.git','.travis.yml','db_scripts_instances.zip'],verbose:true,ignoreExtensions:['zip','pdf']};" > .linteverythingrc.js
   - node ./node_modules/linteverything/bin/linteverything.js

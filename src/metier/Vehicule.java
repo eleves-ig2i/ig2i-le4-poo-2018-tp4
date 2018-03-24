@@ -384,4 +384,52 @@ public class Vehicule implements Serializable {
 		return prec.getDistanceTo(c) + c.getDistanceTo(next) - previousDistance;
 	}
 
+	/**
+	 * Permet de calculer le coût d'une fusion.
+	 * @param v TODO
+	 * @return double
+	 */
+	public double coutFusion(Vehicule v) {
+		if (v == null) {
+			return Double.MAX_VALUE;
+		}
+		if (this.ensClients.isEmpty()) {
+			return Double.MAX_VALUE;
+		}
+		if (v.ensClients.isEmpty()) {
+			return Double.MAX_VALUE;
+		}
+		if ((this.capaciteutilisee + v.getCapaciteutilisee()) > this.capacite) {
+			return Double.MAX_VALUE;
+		}
+
+		Client i = this.ensClients.get(this.ensClients.size() - 1);
+		Client j = v.ensClients.get(0);
+
+		return i.getDistanceTo(j) - i.getDistanceTo(ndepot) - ndepot.getDistanceTo(j);
+	}
+
+	/**
+	 * Permet la fusion de deux véhicules.
+	 * @param v TODO
+	 * @return boolean
+	 */
+	public boolean fusion(Vehicule v) {
+		double coutFusion = this.coutFusion(v);
+		if (coutFusion > (Double.MAX_VALUE - 1)) {
+			return false;
+		}
+
+		this.cout += (v.cout + coutFusion);
+		this.capaciteutilisee += v.capaciteutilisee;
+		this.nplanning.setCout(this.nplanning.getCout() + coutFusion);
+		for (Client c : v.ensClients) {
+			c.changeVehicule(this);
+		}
+		this.ensClients.addAll(v.ensClients);
+		v.clear();
+		this.nplanning.removeVehicule(v);
+		return true;
+	}
+
 }

@@ -189,4 +189,73 @@ public class HeuristiqueConstructive {
 		}
 		return affecte;
 	}
+
+	/**
+	 * Algo de Clarke & Wright.
+	 */
+	public void clarkeAndWright() {
+		this.instance.clear();
+		List<Client> clients = this.instance.getClients();
+		List<Vehicule> vehicules = this.instance.getVehicules();
+		List<Vehicule> vehiculesUtilises = new ArrayList<>();
+		int next = 0;
+
+		for (Client c : clients) {
+			if (vehicules.isEmpty()) {
+				System.out.println("Erreur : Plus de vehicule dispo pour "
+						+ "affecter le client " + c);
+			} else {
+				Vehicule v = vehicules.remove(0);
+				this.instance.addVehiculeInPlanning(v);
+				if (!v.addClient(c)) {
+					System.out.println("Erreur : client " + c + " n'a pas "
+							+ "pu être affecté au vehicule " + v);
+				}
+				vehiculesUtilises.add(v);
+			}
+		}
+		boolean ameliore = true;
+		while (ameliore) {
+			ameliore = fusionTournees(vehiculesUtilises);
+		}
+
+		this.instance.updatePositions();
+		if (!instance.checkPlanning()) {
+			System.out.println("Solution FAUSSE !!!");
+		} else {
+			System.out.println("Solution BONNE !!!");
+		}
+	}
+
+	/**
+	 * Algo de fusion des tournées.
+	 * @param vehiculesUtilises TODO
+	 * @return boolean
+	 */
+	private boolean fusionTournees(List<Vehicule> vehiculesUtilises) {
+		int bestR = -1;
+		int bestS = -1;
+		double bestGain = 1;
+		for (int r = 0; r < vehiculesUtilises.size(); r++) {
+			for (int s = 0; s < vehiculesUtilises.size(); s++) {
+				if (r != s) {
+					double gain = vehiculesUtilises.get(r).coutFusion(vehiculesUtilises.get(s));
+					if (gain < bestGain) {
+						bestGain = gain;
+						bestR = r;
+						bestS = s;
+					}
+				}
+			}
+		}
+		if (bestGain >= 0) {
+			return false;
+		}
+		boolean fusion = vehiculesUtilises.get(bestR).fusion(vehiculesUtilises.get(bestS));
+		if (fusion) {
+			vehiculesUtilises.remove(bestS);
+		}
+		return true;
+	}
+
 }

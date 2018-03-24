@@ -192,4 +192,19 @@ public class Planning implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Peremt de supprimer un véhicule du planning.
+	 * @param v TODO
+	 * @return boolean
+	 */
+	public boolean removeVehicule(Vehicule v){
+		if (v == null) {
+			return false;
+		}
+		if (!v.getEnsClients().isEmpty()) {
+			return false;
+		}
+		return this.ensVehicules.remove(v);
+	}
+
 }

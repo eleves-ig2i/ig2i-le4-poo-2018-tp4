@@ -110,6 +110,19 @@ public class Client extends Point implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Permet de modifier le véhicule associé à un client.
+	 * @param v TODO
+	 * @return boolean
+	 */
+	public boolean changeVehicule(Vehicule v) {
+		if (v == null) {
+			return false;
+		}
+		this.nvehicule = v;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "Client n°" + super.getId() + " [\n\t{ " + super.toString()

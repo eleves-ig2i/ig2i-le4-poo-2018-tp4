@@ -1,7 +1,6 @@
 package algo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import metier.Client;
 import metier.Instance;
@@ -58,8 +57,7 @@ public class HeuristiqueConstructive {
 		this.instance.updatePositions();
 		if (!instance.checkPlanning()) {
 			System.out.println("Solution FAUSSE !!!");
-		}
-		if (!instance.checkPlanning()) {
+		} else {
 			System.out.println("Solution BONNE !!!");
 		}
 	}
@@ -104,8 +102,7 @@ public class HeuristiqueConstructive {
 		this.instance.updatePositions();
 		if (!instance.checkPlanning()) {
 			System.out.println("Solution FAUSSE !!!");
-		}
-		if (!instance.checkPlanning()) {
+		} else {
 			System.out.println("Solution BONNE !!!");
 		}
 	}
@@ -114,22 +111,82 @@ public class HeuristiqueConstructive {
 	 * Permet de trouver le client le plus proche.
 	 * @param c TODO
 	 * @param clients TODO
-	 * @return 
+	 * @return integer
 	 */
 	private int clientPlusProche(Client c, List<Client> clients) {
-        if (clients.isEmpty()) {
+		if (clients.isEmpty()) {
 			return -1;
 		}
-        double distanceMin = c.getDistanceTo(clients.get(0));
-        int next = 0;
-        for (int i=1; i<clients.size(); i++) {
-            Client tmp = clients.get(i);
-            if (c.getDistanceTo(tmp) < distanceMin) {
-                distanceMin = c.getDistanceTo(tmp);
-                next = i;
-            }
-        }
-        return next;
-    }
+		double distanceMin = c.getDistanceTo(clients.get(0));
+		int next = 0;
+		for (int i = 1; i < clients.size(); i++) {
+			Client tmp = clients.get(i);
+			if (c.getDistanceTo(tmp) < distanceMin) {
+				distanceMin = c.getDistanceTo(tmp);
+				next = i;
+			}
+		}
+		return next;
+	}
 
+	/**
+	 * Permet de trouver la meilleure insertion.
+	 */
+	public void meilleureInsertion() {
+		this.instance.clear();
+		List<Client> clients = this.instance.getClients();
+		List<Vehicule> vehicules = this.instance.getVehicules();
+		List<Vehicule> vehiculesUtilises = new ArrayList<>();
+		int next = 0;
+	
+		while (!clients.isEmpty()) {
+			Client c = clients.remove(next);
+			boolean affecte = meilleureInsertion(c, vehiculesUtilises);
+			if (!affecte) {
+				if (vehicules.isEmpty()) {
+					System.out.println("Erreur : Plus de vehicule dispo pour "
+							+ "affecter le client " + c);
+				} else {
+					Vehicule v = vehicules.remove(0);
+					this.instance.addVehiculeInPlanning(v);
+					if (!v.addClient(c)) {
+						System.out.println("Erreur : client " + c + " n'a pas "
+								+ "pu être affecté au vehicule " + v);
+					}
+					vehiculesUtilises.add(v);
+				}
+			}
+			next = clientPlusProche(c, clients);
+		}
+
+		this.instance.updatePositions();
+		if (!instance.checkPlanning()) {
+			System.out.println("Solution FAUSSE !!!");
+		} else {
+			System.out.println("Solution BONNE !!!");
+		}
+	}
+
+	/**
+	 * Permet de calculer la meilleure insertion dans la liste des véhécules
+	 * utilisés.
+	 * @param c
+	 * @param vehiculesUtilises TODO
+	 * @return boolean
+	 */
+	private boolean meilleureInsertion(Client c, List<Vehicule> vehiculesUtilises) {
+		boolean affecte = false;
+		MeilleureInsertionInfos best = new MeilleureInsertionInfos();
+		for (int i = 0; i < vehiculesUtilises.size(); i++) {
+			Vehicule v = vehiculesUtilises.get(i);
+			MeilleureInsertionInfos infos = v.infosMeilleureInsertion(c);
+			if (infos != null && infos.getCout() < best.getCout()) {
+				best = infos;
+			}
+		}
+		if (best.getCout() < Double.MAX_VALUE - 1) {
+			affecte = best.doInsertion();
+		}
+		return affecte;
+	}
 }
